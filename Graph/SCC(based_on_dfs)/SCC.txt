@@ -1,0 +1,19 @@
+// Strongly Connected Component
+
+https://coder-in-war.tistory.com/entry/%EA%B0%9C%EB%85%90-56-SCCStrongly-Connected-Component
+
+https://m.blog.naver.com/PostView.nhn?blogId=kks227&logNo=220802519976&referrerCode=0&searchKeyword=scc
+-- Tarjan algorithm
+
+
+-----------------------
+
+단절점, 단절선
+
+1. 노드별로 방문 순서를 기록함(고정)
+2. 노드별로 최소 어느 노드까지 갈수있는지 기록한다.
+3. 이를 이용해서 노드별 관계를 구할 수 있다.
+
+SCC
+
++1. 최소로 갈 수 있는 노드가 자기 자신이 나오는 경우, 스택에 쌓아둔 값들을 리턴한다

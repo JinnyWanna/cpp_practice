@@ -1,0 +1,9 @@
+https://www.crocus.co.kr/733
+1. MST is linking all of vertex with no cycle, made minimum cost.
+    When making MST, we can get more than one of them.
+2. Kruskal's Algorithm
+    Linking small-cost edge first, we make MST.
+    When the cycle is made, do not linking edge.    
+크루스칼 알고리즘 시간 복잡도 :: O(ElgE)
+프림 알고리즘 시간 복잡도 :: O(ElgV)
+결국, 간선의 개수가 작은 경우에는 크루스칼 알고리즘을, 간선의 개수가 많은 경우에는 프림 알고리즘이 더 좋다는 것이 자명하다.

@@ -1,0 +1,159 @@
+https://4legs-study.tistory.com/121#recentComments
+
+O(N) lcA
+//
+#include <algorithm>
+#include <iostream>
+#include <queue>
+#include <vector>
+
+#define fastio                        \
+    std::ios::sync_with_stdio(false); \
+    std::cin.tie(nullptr);            \
+    std::cout.tie(nullptr);
+
+std::vector<int> edge[100001];
+int n, parent[100001], level[100001];
+
+int lca(int a, int b) {
+    if(level[a] < level[b]) std::swap(a,b); 
+    // level이 더 큰 정점을 a로 맞춘 후, 같아질때까지 내려준다. 
+    while(level[a] != level[b]) {
+        a = parent[a];
+    }
+
+    while(a != b) {
+        a = parent[a];
+        b = parent[b];
+    }
+
+    return a;
+}
+
+void dfs(int node, int pnode) {
+    parent[node] = pnode;
+    level[node] = level[pnode] + 1;
+
+    for(auto i = edge[node].begin(); i < edge[node].end(); ++i) {
+        if(*i == pnode) continue;
+
+        dfs(*i,node);
+    }
+} // 기본 O(N) 해법의 경우 level, parent를 체크해두고, 레벨을 같게 맞춰준뒤 하나씩 올라가면서 탐색한다
+
+
+int main() {
+    fastio;
+
+    std::cin >> n;
+
+    for(int i=0;i<n-1;++i) {
+        int x,y;
+        std::cin >> x >> y;
+        edge[x].push_back(y);
+        edge[y].push_back(x);
+    }
+
+    dfs(1,0);
+
+    int m;
+    std::cin >> m;
+    for(int i=0;i<m;++i) {
+        int x, y;
+        std::cin >> x >> y;
+        std::cout << lca(x,y) << '\n';
+    }
+
+    return 0;
+}
+//
+
+O(logN) lca
+//
+#include <algorithm>
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <cmath>
+
+#define fastio                        \
+    std::ios::sync_with_stdio(false); \
+    std::cin.tie(nullptr);            \
+    std::cout.tie(nullptr);
+
+const int INF = (int)floor(log2(100001));
+
+std::vector<int> edge[100001];
+int n, parent[100001][18], level[100001];
+
+int lca(int a, int b) {
+    if(a==1||b==1) return 1;
+
+    if(level[a] < level[b]) std::swap(a,b);
+    // level이 높은걸 a로 세팅
+    if(level[a] != level[b]) {
+        for(int i=INF;i>=0;--i) {
+            if(level[parent[a][i]] >= level[b]) 
+                a = parent[a][i];
+        }
+    }
+    // level이 다르면, a노드의 2^i 조상들을 체크하며 b의 레벨보단 작지만, 
+    // 최대한 올라갈 수 있는 지점까지 올라간다. 그후에 그 지점에서 더 올라가고 반복
+
+    if(a != b) {
+        for(int i=INF;i>=0;--i) {
+            if(parent[a][i] != parent[b][i]) {
+                a=parent[a][i];
+                b=parent[b][i];
+            }
+        }
+    }  
+
+
+    return parent[a][0];
+}
+
+void dfs(int node, int pnode, int lv) {
+    level[node] = lv;
+    parent[node][0] = pnode;
+
+    for(int i=1; i<=INF ;++i) {
+        parent[node][i] = parent[parent[node][i-1]][i-1];
+    }
+
+    for(auto i = edge[node].begin() ; i < edge[node].end() ; ++i) {
+        if(*i == pnode) continue;
+
+        dfs(*i,node,lv+1);
+    }
+
+} // 기본 O(N) 해법의 경우 level, parent를 체크해두고, 레벨을 같게 맞춰준뒤 하나씩 올라가면서 탐색한다
+
+
+int main() {
+    fastio;
+
+    std::cin >> n;
+
+    for(int i=0;i<n-1;++i) {
+        int x,y;
+        std::cin >> x >> y;
+        edge[x].push_back(y);
+        edge[y].push_back(x);
+    }
+
+
+
+    dfs(1,0,1);
+
+    int m;
+    std::cin >> m;
+    for(int i=0;i<m;++i) {
+        int x, y;
+        std::cin >> x >> y;
+        std::cout << lca(x,y) << '\n';
+    }
+
+    return 0;
+}
+//

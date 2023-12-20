@@ -1,0 +1,3 @@
+단절점, 단절선 -> SCC
+
+세그먼트 트리 -> inversion counting -> 스위핑(2차원 inversion counting) -> lazy propagation

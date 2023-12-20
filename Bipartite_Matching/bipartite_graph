@@ -1,0 +1,22 @@
+bipartite graph.
+
+---------------------
+
+bipartite matching
+
+모든 정점이 참여하는 matching을 찾을수 있나? 
+"- Hall's theorem
+이분 그래프가 L과 R로 이루어져 있을때, 모든 정점이 참여하는 perfect matching이 존재하려면
+모든 L의 부분집합 S가 |S| <= |N(S)|를 만족하는 것이다 (N(S)는 S와 간선으로 연결된 정점들의 집합)
+
+즉, |S| > |N(S)|가 되는 부분집합 S를 찾으면, perfect matching이 존재할 수 없다.
+
+--------------------
+
+증명 : https://gazelle-and-cs.tistory.com/10
+
+"
+-------------------------
+콰니그의 정리 
+이분 그래프에서 maximum_matching = minimum_vertex_cover
+

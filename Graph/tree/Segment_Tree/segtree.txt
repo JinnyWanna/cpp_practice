@@ -1,0 +1,41 @@
+https://m.blog.naver.com/ndb796/221282210534
+
+세그먼트 트리
+
+(연산들은 모두 x축 위에서의 범위로 파악한다, 업데이트의 경우 dfs를 이용하여 알아서 잘 해보기)
+
+1. 구간에 관한 연산을 빠르게 처리하기 위해(O(logN)) 이용한다.
+    1) 구간 연산을 구해두어 바로 출력가능.
+        - if(right < start || end < left) return 0;
+
+        - if(left <= start && end <= right) return tree[node];
+
+        - return recursion(start~mid) + recursion(mid+1~end);
+
+    2) 업데이트시 해당 idx를 포함하는 구간에 값을 변경해준다. (start == end까지)
+        - if(idx < start || end < idx) return;
+
+        - if(start <= idx && idx <= end) tree[node] += diff; return;
+
+        - if(start == end) return;
+
+        recursion(start ~ mid);
+        recursion(mid+1 ~ end);
+
+2. Lazy propagation
+    - 업데이트를 idx에 진행하지 않고, 여러 idx를 포함하는 구간에 진행한다.
+    - 일반 세그먼트 트리의 업데이트는 하나의 idx에만 업데이트를 진행하므로, 
+    구간 연산을 하는 방식을 빌려와 여러 idx에 업데이트를 진행한다.
+
+    1)  if(left <= start && end <= right) return tree[node]; 
+        이게 나오는 케이스의 경우에 Lazy propagation을 진행한다.
+        해당 노드까지만 값을 업데이트하고 이후의 노드에는 업데이트를 진행하지 않는다.
+
+        하지만, 이하 노드도 사용해야 하는 순간이 올 수 있기때문에, 업데이트가 진행되지 않은 노드라는걸 표시해둔다.
+        std::vector<int> Lazy 벡터에 업데이트 해야 하는 값들을 기록해둔다.    
+
+        Lazy 이전 노드에는, (end - start + 1) * value 로 업데이트를 진행해준다.
+        ((end - start + 1)은 해당 노드가 담당하고 있는 구간의 노드개수)
+
+https://www.acmicpc.net/blog/view/26    
+https://yabmoons.tistory.com/442
